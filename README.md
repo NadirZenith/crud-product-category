@@ -48,3 +48,14 @@ curl --location --request DELETE 'localhost:3000/api/category/1' \
 --header 'Content-Type: application/json' \
 --data-raw '{}'
 ```
+
+### /api/product
+```
+curl --location --request POST 'localhost:3000/api/product' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "seconds",
+    "category": 2,
+    "price": 2.34,
+    "currency": "EUR"
+}'

@@ -45,7 +45,7 @@ class Product
     private $featured = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Category::class, cascade={"persist"}, fetch="EAGER")
      */
     private $category;
 
