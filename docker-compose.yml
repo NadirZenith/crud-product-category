@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./volume/mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=api
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+    # ports:
+    #   - 3306:3306
+
+  nginx:
+    build: nginx
+    volumes:
+      - ./php/srv/web:/srv/web
+    ports: 
+      - 3000:80
+
+  php:
+    build: php
+    volumes:
+      - ./php/srv/web:/srv/web
+
