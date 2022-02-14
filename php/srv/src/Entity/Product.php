@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -19,26 +20,30 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive
+     * @Assert\NotBlank
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=3)
+     * @Assert\Choice({"USD", "EUR"})
      */
     private $currency;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $featured;
+    private $featured = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class)
+     * @ORM\ManyToOne(targetEntity=Category::class, cascade={"persist"})
      */
     private $category;
 

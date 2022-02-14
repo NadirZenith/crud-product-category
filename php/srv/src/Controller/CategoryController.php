@@ -10,36 +10,44 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/api/category")
+ * @Route("/api/category", name="api_category_")
  */
 class CategoryController extends AbstractController
 {
     protected CategoryRepository $repository;
     protected SerializerInterface $serializer;
+    protected ValidatorInterface $validator;
 
-    public function __construct(SerializerInterface $serializer, CategoryRepository $repository)
+    public function __construct(SerializerInterface $serializer, CategoryRepository $repository, ValidatorInterface $validator)
     {
         $this->serializer = $serializer;
         $this->repository = $repository;
+        $this->validator = $validator;
     }
 
     /**
-     * @Route("", name="create_category", methods={"POST"})
+     * @Route("", name="create", methods={"POST"})
      */
     public function create(Request $request): Response
     {
         $category = $this->serializer->deserialize($request->getContent(), Category::class, 'json');
 
-        // @todo validation
+        $errors = $this->validator->validate($category);
+        if (count($errors) > 0) {
+
+            return $this->json(['errors' => (string) $errors], Response::HTTP_BAD_REQUEST);
+        }
+
         $category = $this->repository->save($category);
 
-        return $this->json($category);
+        return $this->json($category, Response::HTTP_CREATED);
     }
 
     /**
-     * @Route("/{id}", name="update_category", methods={"PUT"})
+     * @Route("/{id}", name="update", methods={"PUT"})
      */
     public function update(int $id, Request $request): Response
     {
@@ -50,6 +58,12 @@ class CategoryController extends AbstractController
             AbstractNormalizer::OBJECT_TO_POPULATE => $category
         ]);
 
+        $errors = $this->validator->validate($category);
+        if (count($errors) > 0) {
+
+            return $this->json(['errors' => (string) $errors], Response::HTTP_BAD_REQUEST);
+        }
+
         // @todo validation
         $category = $this->repository->save($category);
 
@@ -57,7 +71,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete_category", methods={"DELETE"})
+     * @Route("/{id}", name="delete", methods={"DELETE"})
      */
     public function delete(int $id, Request $request): Response
     {
@@ -70,7 +84,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("", name="all_category", methods={"GET"})
+     * @Route("", name="all", methods={"GET"})
      */
     public function all(Request $request): Response
     {
