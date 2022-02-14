@@ -8,4 +8,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /srv
 COPY srv /srv
 
+# override parent entry point
+# composer install & run tests
+ADD bin/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+
 CMD ["php-fpm"]
