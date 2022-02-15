@@ -10,8 +10,8 @@ services:
       - MYSQL_DATABASE=api
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pass
-    ports:
-      - 3306:3306
+    # ports:
+      # - 3306:3306
 
   nginx:
     build: nginx
@@ -25,5 +25,5 @@ services:
     volumes:
       - ./php/srv:/srv
     environment:
-      - EXCHANGE_API_TOKEN=xxx
+      - EXCHANGE_API_TOKEN=${EXCHANGE_API_TOKEN}
 
