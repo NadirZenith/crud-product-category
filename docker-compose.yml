@@ -24,4 +24,6 @@ services:
     build: php
     volumes:
       - ./php/srv:/srv
+    environment:
+      - EXCHANGE_API_TOKEN=xxx
 

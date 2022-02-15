@@ -10,7 +10,7 @@ use App\Repository\ProductRepository;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\Product;
 use App\Repository\CategoryRepository;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use App\Manager\ProductManager;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -22,13 +22,15 @@ class ProductController extends AbstractController
     protected CategoryRepository $categoryRepository;
     protected SerializerInterface $serializer;
     protected ValidatorInterface $validator;
+    protected ProductManager $productManager;
 
-    public function __construct(SerializerInterface $serializer, ProductRepository $repository, CategoryRepository $categoryRepository, ValidatorInterface $validator)
+    public function __construct(SerializerInterface $serializer, ProductRepository $repository, CategoryRepository $categoryRepository, ValidatorInterface $validator, ProductManager $productManager)
     {
         $this->serializer = $serializer;
         $this->repository = $repository;
         $this->categoryRepository = $categoryRepository;
         $this->validator = $validator;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -63,6 +65,25 @@ class ProductController extends AbstractController
     public function all(Request $request): Response
     {
         $products = $this->repository->findAll();
+
+        return $this->json($products);
+    }
+
+    /**
+     * @Route("/featured", name="featured", methods={"GET"})
+     */
+    public function featured(Request $request): Response
+    {
+        $currency = $request->query->get('currency', 'EUR');
+
+        if (!in_array($currency, ['EUR', 'USD'])) {
+            $currency = 'EUR';
+        }
+
+        $products = $this->repository->findBy(['featured' => true]);
+
+
+        $products = $this->productManager->toCurrency($currency, $products);
 
         return $this->json($products);
     }
