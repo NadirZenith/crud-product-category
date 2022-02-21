@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Model\Currency;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -35,7 +36,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=3)
-     * @Assert\Choice({"USD", "EUR"})
+     * @Assert\Choice(choices=Currency::ALL)
      */
     private $currency;
 
