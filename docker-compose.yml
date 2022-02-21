@@ -21,7 +21,11 @@ services:
       - 3000:80
 
   php:
-    build: php
+    # build: php
+    build:
+      context: ./php
+      args:
+        - WITH_XDEBUG=true    
     volumes:
       - ./php/srv:/srv
     environment:
