@@ -9,6 +9,7 @@ use App\Service\ExchangeService;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Entity\Product;
+use App\Model\Currency;
 
 class ProductManager
 {
@@ -58,6 +59,10 @@ class ProductManager
 
     public function getFeatured(string $currency): array
     {
+        if (!in_array($currency, Currency::ALL)) {
+            $currency = Currency::EUR;
+        }
+
         $products = $this->productRepository->findBy(['featured' => true]);
 
         return $this->toCurrency($currency, $products);
@@ -70,9 +75,9 @@ class ProductManager
             $price = $product->getPrice();
             $productCurrency = $product->getCurrency();
 
-            if ('EUR' === $productCurrency && 'USD' === $currency) {
+            if (Currency::EUR === $productCurrency && Currency::USD === $currency) {
                 $price = $this->exchangeService->getPriceUSD($price);
-            } elseif ('USD' === $productCurrency && 'EUR' === $currency) {
+            } elseif (Currency::USD === $productCurrency && Currency::EUR === $currency) {
                 $price = $this->exchangeService->getPriceEUR($price);
             }
 
