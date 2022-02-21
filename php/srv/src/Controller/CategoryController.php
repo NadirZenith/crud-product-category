@@ -2,33 +2,24 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
-use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Exception\ExceptionCreatingResource;
+use App\Exception\ExceptionUpdatingResource;
+use App\Manager\CategoryManager;
 
 /**
  * @Route("/api/categories", name="api_categories_")
  */
 class CategoryController extends AbstractController
 {
-    protected CategoryRepository $repository;
-    protected SerializerInterface $serializer;
-    protected ValidatorInterface $validator;
-    protected ProductRepository $productRepository;
+    protected CategoryManager $categoryManager;
 
-    public function __construct(SerializerInterface $serializer, CategoryRepository $repository, ValidatorInterface $validator, ProductRepository $productRepository)
+    public function __construct(CategoryManager $categoryManager)
     {
-        $this->serializer = $serializer;
-        $this->repository = $repository;
-        $this->validator = $validator;
-        $this->productRepository = $productRepository;
+        $this->categoryManager = $categoryManager;
     }
 
     /**
@@ -36,17 +27,19 @@ class CategoryController extends AbstractController
      */
     public function create(Request $request): Response
     {
-        $category = $this->serializer->deserialize($request->getContent(), Category::class, 'json');
-
-        $errors = $this->validator->validate($category);
-        if (count($errors) > 0) {
-
-            return $this->json(['errors' => (string) $errors], Response::HTTP_BAD_REQUEST);
+        try {
+            return $this->json(
+                $this->categoryManager->create($request->getContent()),
+                Response::HTTP_CREATED
+            );
+        } catch (ExceptionCreatingResource $exception) {
+            return $this->json(
+                [
+                    'errors' => $exception->getMessage()
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
-
-        $category = $this->repository->save($category);
-
-        return $this->json($category, Response::HTTP_CREATED);
     }
 
     /**
@@ -55,22 +48,19 @@ class CategoryController extends AbstractController
     public function update(int $id, Request $request): Response
     {
 
-        $category = $this->repository->findOneBy(['id' => $id]);
-
-        $category = $this->serializer->deserialize($request->getContent(), Category::class, 'json', [
-            AbstractNormalizer::OBJECT_TO_POPULATE => $category
-        ]);
-
-        $errors = $this->validator->validate($category);
-        if (count($errors) > 0) {
-
-            return $this->json(['errors' => (string) $errors], Response::HTTP_BAD_REQUEST);
+        try {
+            return $this->json(
+                $this->categoryManager->update($id, $request->getContent()),
+                Response::HTTP_CREATED
+            );
+        } catch (ExceptionUpdatingResource $exception) {
+            return $this->json(
+                [
+                    'errors' => $exception->getMessage()
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
-
-        // @todo validation
-        $category = $this->repository->save($category);
-
-        return $this->json($category);
     }
 
     /**
@@ -78,28 +68,17 @@ class CategoryController extends AbstractController
      */
     public function delete(int $id): Response
     {
-
-        $products = $this->productRepository->findBy(['category' => $id]);
-
-        foreach ($products as $product) {
-            $product->setCategory(null);
-            $this->productRepository->save($product);
-        }
-
-        $category = $this->repository->findOneBy(['id' => $id]);
-
-        !$category ?: $this->repository->remove($category);
-
+        $this->categoryManager->delete($id);
         return $this->json([]);
     }
 
     /**
      * @Route("", name="all", methods={"GET"})
      */
-    public function all(Request $request): Response
+    public function all(): Response
     {
-        $categories = $this->repository->findAll();
-
-        return $this->json($categories);
+        return $this->json(
+            $this->categoryManager->get()
+        );
     }
 }
