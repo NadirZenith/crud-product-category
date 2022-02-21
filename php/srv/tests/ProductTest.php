@@ -28,14 +28,14 @@ class ProductTest extends WebTestCase
         $client = static::createClient();
 
         // demos cats
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'name' => 'firstcat'
         ]));
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'name' => 'secondcat'
         ]));
 
-        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/products', [], [], [], json_encode([
             'name' => 'first product',
             'price' => 1.25,
             'currency' => 'USD',
@@ -56,7 +56,7 @@ class ProductTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $crawler = $client->request('GET', '/api/product');
+        $crawler = $client->request('GET', '/api/products');
 
         $this->assertResponseIsSuccessful();
 
@@ -69,7 +69,7 @@ class ProductTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/products', [], [], [], json_encode([
             'name' => 'second product error',
             'price' => 1.27,
             'currency' => 'CHF',
@@ -90,7 +90,7 @@ class ProductTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/products', [], [], [], json_encode([
             'name' => 'second product error',
             'currency' => 'EUR',
             'featured' => false,
@@ -111,7 +111,7 @@ class ProductTest extends WebTestCase
     {
         // p1
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/products', [], [], [], json_encode([
             'name' => 'third product',
             'price' => 1.35,
             'currency' => 'USD',
@@ -120,7 +120,7 @@ class ProductTest extends WebTestCase
 
         // p2
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/products', [], [], [], json_encode([
             'name' => 'fourth product',
             'price' => 1.45,
             'currency' => 'EUR',
@@ -130,7 +130,7 @@ class ProductTest extends WebTestCase
 
 
         $client = static::createClient();
-        $crawler = $client->request('GET', '/api/product/featured?currency=USD');
+        $crawler = $client->request('GET', '/api/products/featured?currency=USD');
 
         $this->assertResponseIsSuccessful();
 

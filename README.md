@@ -34,11 +34,11 @@ __note__
 
 ## Endpoints
 
-### /api/category
+### /api/categories
 
 **create**
 ```
-curl --location --request POST 'localhost:3000/api/category' \
+curl --location --request POST 'localhost:3000/api/categories' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "first",
@@ -49,7 +49,7 @@ curl --location --request POST 'localhost:3000/api/category' \
 
 **update**
 ```
-curl --location --request PUT 'localhost:3000/api/category/1' \
+curl --location --request PUT 'localhost:3000/api/categories/1' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "first edit",
@@ -59,16 +59,16 @@ curl --location --request PUT 'localhost:3000/api/category/1' \
 
 **delete**
 ```
-curl --location --request DELETE 'localhost:3000/api/category/1' \
+curl --location --request DELETE 'localhost:3000/api/categories/1' \
 --header 'Content-Type: application/json' \
 --data-raw '{}'
 ```
 
-### /api/product
+### /api/products
 
 **create**
 ```
-curl --location --request POST 'localhost:3000/api/product' \
+curl --location --request POST 'localhost:3000/api/products' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "seconds",
@@ -80,14 +80,14 @@ curl --location --request POST 'localhost:3000/api/product' \
 
 **all**
 ```
-curl --location --request GET 'localhost:3000/api/product' \
+curl --location --request GET 'localhost:3000/api/products' \
 --header 'Content-Type: application/json' \
 --data-raw '{}'
 ```
 
 **featured**
 ```
-curl --location --request GET 'localhost:3000/api/product/featured?currency=USD' \
+curl --location --request GET 'localhost:3000/api/products/featured?currency=USD' \
 --header 'Content-Type: application/json' \
 --data-raw '{}'
 ```

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/api/category", name="api_category_")
+ * @Route("/api/categories", name="api_categories_")
  */
 class CategoryController extends AbstractController
 {

@@ -14,7 +14,7 @@ use App\Manager\ProductManager;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/api/product", name="api_product_")
+ * @Route("/api/products", name="api_products_")
  */
 class ProductController extends AbstractController
 {

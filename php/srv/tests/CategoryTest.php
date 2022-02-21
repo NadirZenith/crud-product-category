@@ -27,7 +27,7 @@ class CategoryTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'name' => 'firstcat'
         ]));
 
@@ -38,7 +38,7 @@ class CategoryTest extends WebTestCase
 
         $this->assertStringContainsString('firstcat', $content);
 
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'name' => 'secondcat'
         ]));
 
@@ -54,7 +54,7 @@ class CategoryTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'description' => 'miss name'
         ]));
 
@@ -71,7 +71,7 @@ class CategoryTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'name' => 'firstcat',
             'description' => 'miss name'
         ]));
@@ -88,7 +88,7 @@ class CategoryTest extends WebTestCase
     public function testUpdateCategory(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('PUT', '/api/category/1', [], [], [], json_encode([
+        $crawler = $client->request('PUT', '/api/categories/1', [], [], [], json_encode([
             'name' => 'first-edit',
             'description' => 'first-description',
         ]));
@@ -105,7 +105,7 @@ class CategoryTest extends WebTestCase
     public function testUpdateCategoryError(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('PUT', '/api/category/1', [], [], [], json_encode([
+        $crawler = $client->request('PUT', '/api/categories/1', [], [], [], json_encode([
             'name' => '',
             'description' => 'first-description',
         ]));
@@ -120,7 +120,7 @@ class CategoryTest extends WebTestCase
     public function testAllCategories(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/api/category');
+        $crawler = $client->request('GET', '/api/categories');
 
         $this->assertResponseIsSuccessful();
 
@@ -133,7 +133,7 @@ class CategoryTest extends WebTestCase
     public function testDeleteCategory(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('DELETE', '/api/category/1');
+        $crawler = $client->request('DELETE', '/api/categories/1');
 
         $this->assertResponseIsSuccessful();
 
@@ -145,14 +145,14 @@ class CategoryTest extends WebTestCase
     public function testDeleteCategoryLinkedToProduct(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/categories', [], [], [], json_encode([
             'name' => 'firstcatwithproduct'
         ]));
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
 
-        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+        $crawler = $client->request('POST', '/api/products', [], [], [], json_encode([
             'name' => 'product for cat test',
             'price' => 1.25,
             'currency' => 'USD',
@@ -163,7 +163,7 @@ class CategoryTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
 
         $client = static::createClient();
-        $crawler = $client->request('DELETE', '/api/category/3');
+        $crawler = $client->request('DELETE', '/api/categories/3');
 
         $this->assertResponseIsSuccessful();
 

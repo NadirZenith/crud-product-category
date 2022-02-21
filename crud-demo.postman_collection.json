@@ -26,14 +26,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/category",
+							"raw": "localhost:3000/api/categories",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -54,14 +54,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/category/3",
+							"raw": "localhost:3000/api/categories/3",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"category",
+								"categories",
 								"3"
 							]
 						}
@@ -83,15 +83,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/category/4",
+							"raw": "localhost:3000/api/categories/1",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"category",
-								"4"
+								"categories",
+								"1"
 							]
 						}
 					},
@@ -112,14 +112,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/category",
+							"raw": "localhost:3000/api/categories",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -148,14 +148,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/product",
+							"raw": "localhost:3000/api/products",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"product"
+								"products"
 							]
 						}
 					},
@@ -179,7 +179,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/product/featured?currency=EUR",
+							"raw": "localhost:3000/api/product/products?currency=EUR",
 							"host": [
 								"localhost"
 							],
@@ -187,7 +187,7 @@
 							"path": [
 								"api",
 								"product",
-								"featured"
+								"products"
 							],
 							"query": [
 								{
@@ -206,7 +206,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"seconds\",\n    \"category\": 2,\n    \"price\": 2.34,\n    \"currency\": \"EUR\"\n}",
+							"raw": "{\n    \"name\": \"sdfasdf\",\n    \"category\": 1,\n    \"price\": 4.23,\n    \"currency\": \"USD\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -214,14 +214,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/product",
+							"raw": "localhost:3000/api/products",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"product"
+								"products"
 							]
 						}
 					},
