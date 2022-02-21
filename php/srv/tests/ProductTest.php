@@ -44,6 +44,7 @@ class ProductTest extends WebTestCase
         ]));
 
         $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
 
         $content = $client->getResponse()->getContent();
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +21,14 @@ class CategoryController extends AbstractController
     protected CategoryRepository $repository;
     protected SerializerInterface $serializer;
     protected ValidatorInterface $validator;
+    protected ProductRepository $productRepository;
 
-    public function __construct(SerializerInterface $serializer, CategoryRepository $repository, ValidatorInterface $validator)
+    public function __construct(SerializerInterface $serializer, CategoryRepository $repository, ValidatorInterface $validator, ProductRepository $productRepository)
     {
         $this->serializer = $serializer;
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -73,8 +76,15 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}", name="delete", methods={"DELETE"})
      */
-    public function delete(int $id, Request $request): Response
+    public function delete(int $id): Response
     {
+
+        $products = $this->productRepository->findBy(['category' => $id]);
+
+        foreach ($products as $product) {
+            $product->setCategory(null);
+            $this->productRepository->save($product);
+        }
 
         $category = $this->repository->findOneBy(['id' => $id]);
 

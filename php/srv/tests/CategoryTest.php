@@ -141,4 +141,34 @@ class CategoryTest extends WebTestCase
 
         $this->assertStringContainsString('[]', $content);
     }
+
+    public function testDeleteCategoryLinkedToProduct(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('POST', '/api/category', [], [], [], json_encode([
+            'name' => 'firstcatwithproduct'
+        ]));
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+
+        $crawler = $client->request('POST', '/api/product', [], [], [], json_encode([
+            'name' => 'product for cat test',
+            'price' => 1.25,
+            'currency' => 'USD',
+            'featured' => false,
+            'category' => 3,
+        ]));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+
+        $client = static::createClient();
+        $crawler = $client->request('DELETE', '/api/category/3');
+
+        $this->assertResponseIsSuccessful();
+
+        $content = $client->getResponse()->getContent();
+
+        $this->assertStringContainsString('[]', $content);
+    }
 }

@@ -56,7 +56,7 @@ class ProductController extends AbstractController
         // @todo validation
         $product = $this->repository->save($product);
 
-        return $this->json($product);
+        return $this->json($product, Response::HTTP_CREATED);
     }
 
     /**
